@@ -7,14 +7,14 @@ var audioCtx;
 		initSocket();
 		initAudio();
 		socket.onopen = function(event) { //socket open callback			
-			alert("Success");
+			//alert("Success");
 		};
 		socket.onerror = function(event) { //socket error callback
 			alert("Error!");
 		};
 
 		socket.onmessage = function(msg) {
-			alert("HELLo");
+			//alert("HELLo");
 			if (msg.data instanceof ArrayBuffer) {
 				var src = audioCtx.createBufferSource();
 

@@ -159,6 +159,7 @@ public class WebReceiver extends Receiver {
 			FileInputStream in;
 			in = new FileInputStream(FilePath);
 			in.read(fileData);
+			in.close();
 		} catch (IOException e) {
 			SCDebug.DebugMsg("WEBSERVER : CANNOT FIND FILE");
 		}
