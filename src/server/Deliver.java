@@ -38,7 +38,7 @@ public class Deliver extends Thread{
 				audioBuffers[readIndex].getBuffer(this.number, tempBuffer);
 				readIndex = (readIndex + 1) % Server.NUM_OF_BUFFERS;
 				SCDebug.DebugMsg("Deliver " + this.number + " Read");
-				//SCDebug.DebugMsg("Deliver " + this.number + ": READ DATA" + "readIndex : " + readIndex);
+				SCDebug.DebugMsg("Deliver " + this.number + ": READ DATA" + "readIndex : " + readIndex);
 				sender.sendData(tempBuffer);					
 			}
 		} catch(Exception e) {

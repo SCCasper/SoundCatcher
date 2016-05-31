@@ -10,17 +10,22 @@ import server.AudioSource;
 import server.Stub;
 
 public class WebSender extends Sender {
-	private byte [] sendBuffer;
-
+	private static final int FRAME_MAX_COUNT_IN_BLOCK = 18;
+	
 	// Wav Header
 	private static final int WAV_HEADER_SIZE = 44;
-	private static final int WAV_SAMPLE_SIZE = AudioBuffer.AUDIO_BUFFER_SIZE + WAV_HEADER_SIZE;
+	private static final int WAV_BLOCK_SIZE = AudioBuffer.AUDIO_BUFFER_SIZE * FRAME_MAX_COUNT_IN_BLOCK;
+	private static final int WAV_BUFFER_SIZE = WAV_BLOCK_SIZE + WAV_HEADER_SIZE;
+	
 	private static final byte[] WAV_HEADER = new byte[WAV_HEADER_SIZE];
 
 	private static final byte TEXT_DATA = (byte) 129;
 	private static final byte BINARY_DATA = (byte) 130;
 
 	private static final byte MSG_TYPE = BINARY_DATA;
+	
+	private int frameIdxInBlock = 0;
+	private byte [] sendBuffer;
 	
 	private Socket client;
 	private OutputStream out;
@@ -29,7 +34,7 @@ public class WebSender extends Sender {
 	public WebSender(Socket client, Stub stub){
 		this.client = client;
 		this.stub = stub;
-		sendBuffer = new byte[WAV_SAMPLE_SIZE];	
+		this.sendBuffer = new byte[WAV_BUFFER_SIZE];	
 		initWavHeader();
 		setStream();
 	}
@@ -44,7 +49,7 @@ public class WebSender extends Sender {
 	}
 
 	private void initWavHeader() {
-		int totalDataLen = WAV_SAMPLE_SIZE + 36;
+		int totalDataLen = WAV_BLOCK_SIZE *  + 36;
 
 		// RIFF
 		WAV_HEADER[0] = 'R';
@@ -61,7 +66,6 @@ public class WebSender extends Sender {
 		WAV_HEADER[9] = 'A';
 		WAV_HEADER[10] = 'V';
 		WAV_HEADER[11] = 'E';
-		//////////////////////////////////////////////////////////////////
 		// fmt
 		WAV_HEADER[12] = 'f';
 		WAV_HEADER[13] = 'm';
@@ -108,17 +112,22 @@ public class WebSender extends Sender {
 		WAV_HEADER[38] = 't';
 		WAV_HEADER[39] = 'a';
 		// Audio Data Size
-		WAV_HEADER[40] = (byte) (WAV_SAMPLE_SIZE & 0xff);
-		WAV_HEADER[41] = (byte) ((WAV_SAMPLE_SIZE >> 8) & 0xff);
-		WAV_HEADER[42] = (byte) ((WAV_SAMPLE_SIZE >> 16) & 0xff);
-		WAV_HEADER[43] = (byte) ((WAV_SAMPLE_SIZE >> 24) & 0xff);
+		WAV_HEADER[40] = (byte) (WAV_BUFFER_SIZE & 0xff);
+		WAV_HEADER[41] = (byte) ((WAV_BUFFER_SIZE >> 8) & 0xff);
+		WAV_HEADER[42] = (byte) ((WAV_BUFFER_SIZE >> 16) & 0xff);
+		WAV_HEADER[43] = (byte) ((WAV_BUFFER_SIZE >> 24) & 0xff);
 		
 		System.arraycopy(WAV_HEADER, 0, sendBuffer, 0, WAV_HEADER_SIZE);
 	}
 
 	@Override
-	public void sendData(byte[] buffer) {
-		System.arraycopy(buffer, 0, sendBuffer, WAV_HEADER_SIZE, buffer.length);
+	public void sendData(byte[] buffer) {	//WebSocket Send Message
+		System.arraycopy(buffer, 0, sendBuffer, WAV_HEADER_SIZE + (frameIdxInBlock * AudioBuffer.AUDIO_BUFFER_SIZE), buffer.length);
+		if(frameIdxInBlock < FRAME_MAX_COUNT_IN_BLOCK -1) {
+			frameIdxInBlock = (frameIdxInBlock + 1) % FRAME_MAX_COUNT_IN_BLOCK;
+			return;
+		}
+		frameIdxInBlock = (frameIdxInBlock + 1) % FRAME_MAX_COUNT_IN_BLOCK;
 		
 		int frameCount = 0;
 		byte[] frame = new byte[10];
@@ -150,16 +159,8 @@ public class WebSender extends Sender {
 		int bLength = frameCount + sendBuffer.length;
 
 		byte[] reply = new byte[bLength];
-
-		int bLim = 0;
-		for (int i = 0; i < frameCount; i++) {
-			reply[bLim] = frame[i];
-			bLim++;
-		}
-		for (int i = 0; i < sendBuffer.length; i++) {
-			reply[bLim] = sendBuffer[i];
-			bLim++;
-		}
+		System.arraycopy(frame, 0, reply, 0, frameCount);
+		System.arraycopy(sendBuffer, 0, reply, frameCount, sendBuffer.length);
 		try {
 			this.out.write(reply);
 		} catch (IOException e) {
@@ -172,4 +173,5 @@ public class WebSender extends Sender {
 			}
 		}
 	}
+	
 }

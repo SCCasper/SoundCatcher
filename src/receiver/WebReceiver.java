@@ -83,8 +83,10 @@ public class WebReceiver extends Receiver {
 				attr = attr.toUpperCase();
 				if (attr.equals(HTTP_GET)) {// Good Request
 					String fileName = tokenizer.nextToken();
-					if (fileName.startsWith("/"))
+					if (fileName.startsWith("/")){						
 						fileName = fileName.substring(1);
+						
+					}
 					if (fileName.length() != 0) {
 						httpHandShake(fileName, client);
 						client.close();

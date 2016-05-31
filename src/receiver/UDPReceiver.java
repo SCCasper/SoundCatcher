@@ -26,23 +26,9 @@ public class UDPReceiver extends Receiver {
 			receiveSocket = new DatagramSocket(UDP_RPORT);
 			receiveSocket.setReceiveBufferSize(message.length);
 			receivePacket = new DatagramPacket(message, message.length);
-		} catch (SocketException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	
-		// mock client test
-		for (int t = 0; t < 0; t++) {
-			UDPSender test = new UDPSender();
-			try {
-				test.setAddress(InetAddress.getByName("111.111.111.111"));
-				stub.createDeliver(test, InetAddress.getByName("111.111.111.111"));
-			} catch (UnknownHostException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		
+		} catch (SocketException e) {
+			SCDebug.DebugMsg("UDPRECEIVER : SOCKET OPEN ERROR");
+		}	
 		while (true) {
 			try {
 				SCDebug.DebugMsg("UDPRECEIVER : RUN");
