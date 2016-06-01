@@ -1,6 +1,6 @@
 var socket;
 
-socket = new WebSocket("ws://113.198.84.72:80");
+socket = new WebSocket("ws://127.0.0.1:80");
 socket.binaryType = 'arraybuffer';
 
 socket.onopen = function(event) {

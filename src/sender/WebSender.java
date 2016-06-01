@@ -10,7 +10,7 @@ import server.AudioSource;
 import server.Stub;
 
 public class WebSender extends Sender {
-	private static final int FRAME_MAX_COUNT_IN_BLOCK = 18;
+	private static final int FRAME_MAX_COUNT_IN_BLOCK = 10;
 	
 	// Wav Header
 	private static final int WAV_HEADER_SIZE = 44;

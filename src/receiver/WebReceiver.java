@@ -75,6 +75,8 @@ public class WebReceiver extends Receiver {
 
 	private void routingClient(String header, Socket client) throws IOException {
 		String[] tokensHeader = header.split(EOL);
+		String fileName = null;
+		boolean webSocketFlag = false;
 		for (String token : tokensHeader) {
 			StringTokenizer tokenizer;
 			if (token.length() != 0) {
@@ -82,25 +84,29 @@ public class WebReceiver extends Receiver {
 				String attr = tokenizer.nextToken();
 				attr = attr.toUpperCase();
 				if (attr.equals(HTTP_GET)) {// Good Request
-					String fileName = tokenizer.nextToken();
-					if (fileName.startsWith("/")){						
-						fileName = fileName.substring(1);
-						
-					}
-					if (fileName.length() != 0) {
-						httpHandShake(fileName, client);
-						client.close();
-					}
+					fileName = tokenizer.nextToken();
+					if (fileName.startsWith("/")){
+						if(fileName.equals("/")){
+							fileName = "SoundCatcher.html"; 
+						}else{
+							fileName = fileName.substring(1);
+						}
+					}					
 				} else if (attr.equals(HTTP_WEBSOCKET_SEC_KEY)) {
 					String key = tokenizer.nextToken();
 					webSocketHandShake(key, client);
 					clientConnect(client);
+					webSocketFlag = true;
 				} else {// Bad Request
 						// clientWriteData(client, "HTTP/1.1 400 Bad Request");
-				}
+				}				
 			} else {
 				System.out.println("read Not" + token);
 			}
+		}
+		if (fileName.length() != 0 && !webSocketFlag) {
+			httpHandShake(fileName, client);
+			client.close();
 		}
 
 	}
