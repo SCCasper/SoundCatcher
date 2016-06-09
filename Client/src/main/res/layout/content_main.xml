@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.administrator.casperv01.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_global_top"
+        android:id="@+id/topPanel"
+        >
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="110dp"
+            android:layout_height="48dp"
+            android:background="@mipmap/img_global_logo"
+            android:id="@+id/logoImage"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_gravity="center"
+
+        >
+        <com.szugyi.circlemenu.view.CircleLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/CircleLayout"
+            android:background="@drawable/bg_global_circle"
+
+
+            android:clickable="false"
+
+            android:focusableInTouchMode="false"
+            android:nestedScrollingEnabled="true"
+            android:password="false"
+
+            android:layout_centerInParent="true"
+            >
+
+            <include layout="@layout/menu_item"/>
+
+        </com.szugyi.circlemenu.view.CircleLayout>
+
+        <ImageView
+            android:layout_width="39dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:id="@+id/twinkleImage"
+            android:background="@mipmap/img_global_twinkle"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/btn_global_center_normal"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:id="@+id/centerCircle"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="12sp"
+            android:text="PLAY"
+            android:id="@+id/centerText"
+            android:textColor="#ffffff"
+
+            />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@mipmap/bg_global_bottom"
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+
+            android:id="@+id/StateText"
+
+            android:text="대기 상태"
+
+            android:textSize="12sp"
+            android:textColor="#00e9b4"
+            />
+
+        <TextView
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="12sp"
+            android:textColor="#00e9b4"
+            android:id="@+id/explainMsg"
+            />
+
+        <SeekBar
+
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+
+            android:visibility="visible"
+            android:id="@+id/volumeBar"
+            android:scrollbarStyle="insideOverlay"
+
+            android:progressBackgroundTint="#000000" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="38dp"
+            android:id="@+id/exitButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+
+            android:background="@drawable/button_pressed"
+            android:textSize="14sp"
+            android:textColor="#ffffff"
+            android:text="EXIT"
+            />
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+</LinearLayout>

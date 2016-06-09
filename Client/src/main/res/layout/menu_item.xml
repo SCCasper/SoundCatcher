@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/exitImage"
+        android:background="@mipmap/ic_global_exit_normal"
+        />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/playImage"
+        android:background="@mipmap/ic_global_play_normal"
+        />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pauseImage"
+        android:background="@mipmap/ic_global_pause_normal"
+        />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/speakerImage"
+        android:background="@mipmap/ic_global_volume_normal"
+        />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recordImage"
+        android:background="@mipmap/ic_global_record_normal"
+        />
+
+
+</merge>
