@@ -71,34 +71,20 @@ public class AudioSource extends Thread {
 
    public void run() {
       try {
-         int circleIndex = 0, readSize;
+         int readSize;
          long beforeTime = 0, currentTime = 0;
          targetDataLine.start();
          while (true) {
             beforeTime = System.currentTimeMillis();
-            // readSize = targetDataLine.read(tempBuffer, 0, FRAME_SIZE);
             readSize = audioInputStream.read(tempBuffer, 0, FRAME_SIZE);
             SCDebug.DebugMsg("Read time : " + (beforeTime - currentTime) + ", Read size : " + readSize
                   + ", Remain data : " + targetDataLine.available() + "  writeIndex" + writeIndex);
-            synchronized (audioBuffers[writeIndex]) {
+
                audioBuffers[writeIndex].setBuffer(tempBuffer);
                currentTime = System.currentTimeMillis();
-               audioBuffers[writeIndex].setFlags();
-               audioBuffers[writeIndex].notifyAll();
                writeIndex = (writeIndex + 1) % Server.NUM_OF_BUFFERS;
                SCDebug.DebugMsg("Source Write");
             }
-
-            // circleIndex++;
-            // SCDebug.DebugMsg("PRODUCER: CREATE DATA " + circleIndex);
-            Thread.sleep(1);
-
-            // if (circleIndex >= 1500) {
-            // stopReadData();
-            // SCDebug.printLog();
-            // break;
-            // }
-
          }
       } catch (Exception e) {
          e.printStackTrace();
