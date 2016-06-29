@@ -26,8 +26,16 @@ public class AudioBuffer {
 		notifyAll();
 	}
 	
-	public void setBuffer(byte [] buffer) {
+	synchronized public void setBuffer(byte [] buffer) {
 		System.arraycopy(buffer, 0, this.buffer, 0, AudioBuffer.AUDIO_BUFFER_SIZE);
+		setFlags();
+                notifyAll();
+                
+                try {
+	                Thread.sleep(1);
+                } catcher (Exception e) {
+                	e.printStackTrace();
+                }
 	}
 	
 	public void setFlags() {
