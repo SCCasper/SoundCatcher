@@ -84,7 +84,6 @@ public class AudioSource extends Thread {
                currentTime = System.currentTimeMillis();
                writeIndex = (writeIndex + 1) % Server.NUM_OF_BUFFERS;
                SCDebug.DebugMsg("Source Write");
-            }
          }
       } catch (Exception e) {
          e.printStackTrace();
