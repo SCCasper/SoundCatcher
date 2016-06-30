@@ -33,7 +33,7 @@ public class AudioBuffer {
                 
                 try {
 	                Thread.sleep(1);
-                } catcher (Exception e) {
+                } catch (Exception e) {
                 	e.printStackTrace();
                 }
 	}
