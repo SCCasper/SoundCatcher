@@ -15,34 +15,33 @@
 		<!-- Header -->
 		<header id="header">
 			<span class="avatar"><img src="images/SoundCatcher.png" alt="" /></span>
-			<h1>
-				Project Name : <strong>SoundCatcher</strong>
-			</h1>
-			<h1>
-				Team Name : <strong>CASPER</strong>
-			</h1>
-			<h1>
-				Professor : <strong>황기태 교수님</strong>
-			</h1>
-			<h1>Team Member</h1>
-			<h2>
-				<strong>최지훈</strong>
-			</h2>
-			<h2>
-				<strong>권영재</strong>
-			</h2>
-			<h2>
-				<strong>심영보</strong>
-			</h2>
-			<h2>
-				<strong>유민석</strong>
-			</h2>
-			<ul class="icons">
-				<li><a onclick="clientStart()"><span class="label"><img
-							src="images/icon/ic_global_play_normal.png"></span></a></li>
-				<li><a onclick="clientStart()"><span class="label"><img
-							src="images/icon/ic_global_pause_normal.png"></span></a></li>
-			</ul>
+			<div id="project">
+				<h1>
+					Project Name : <strong>SoundCatcher</strong>
+				</h1>
+				<h1>
+					Team Name : <strong>CASPER</strong>
+				</h1>
+				<h1>
+					Professor : <strong>황기태 교수님</strong>
+				</h1>
+				<h1>Team Member</h1>
+				<h2>
+					<strong>최지훈 권영재</strong>
+				</h2>
+				<h2>
+					<strong>심영보 유민석</strong>
+				</h2>
+				<ul class="icons">
+					<li><a id="btnPlay" onclick="webSocketConnection()"><span
+							class="label"><img
+								src="images/icon/ic_global_play_normal.png"></span></a></li>
+				</ul>
+			</div>
+			<div id="success" style="display: none;">
+				<h1>Web Socket Open Success</h1>
+				<h1>Web Socket Receive Audio Data</h1>
+			</div>
 		</header>
 
 
@@ -59,8 +58,6 @@
 	</div>
 
 	<!-- Scripts -->
-
-
 	<script src="assets/js/SoundCatcher.js"></script>
 
 
