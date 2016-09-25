@@ -1,4 +1,4 @@
-package web;
+package webCode;
 
 public class HttpHeader {
     public static final String A_IM = "A-IM";

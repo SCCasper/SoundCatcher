@@ -12,66 +12,75 @@ import java.util.StringTokenizer;
 import debug.SCDebug;
 import sender.WebSender;
 import server.Stub;
+import webCode.HttpHeader;
+import webCode.HttpMethod;
+import webCode.HttpRequestHandler;
 
 public class WebReceiver extends Receiver {
 	protected static final int WEB_RPORT = 80;
 
-	private static final String MAGIC_STRING = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-
 	private static final String EOL = "\r\n";
-	private static final String HTTP_GET = "GET";
 	private static final String HTTP_WEBSOCKET_SEC_KEY = "SEC-WEBSOCKET-KEY:";
 
-	private static final int HTTP_HEADER_SIZE = 2048;
+	private static final int HTTP_TIMEOUT = 10000;
+
 	private static final String WEB_FILE_LOCATION = "web/";
 
-	private ServerSocket server;
+	private ServerSocket server = null;
+	private HttpRequestHandler request = null;
 
 	public WebReceiver(Stub stub) {
 		super(stub);
 	}
 
-	private void initSocket() {
-		try {
-			this.server = new ServerSocket(WEB_RPORT);
-		} catch (IOException e) {
-			SCDebug.DebugMsg("WEB SOCKET OPEN ERROR");
-		}
-	}
-
 	@Override
 	public void run() {
 		initSocket();
-		SCDebug.DebugMsg("Web : RUN");
+		initHandler();
 
-		while (true) {
-			try {
-				Socket client = this.server.accept();
-				String header;
-				if ((header = getHeader(client)) == null) { // NO Header
-
-				}
-				System.out.println(header);
-				System.out.println();
-				routingClient(header, client);
-			} catch (IOException e) {
-				SCDebug.DebugMsg("WEBSERVER : ERROR");
-			}
-		}
-	}
-
-	private String getHeader(Socket client) {
-		String header = null;
 		try {
-			byte[] byteHeader = new byte[HTTP_HEADER_SIZE];
-			client.getInputStream().read(byteHeader);
-			header = new String(byteHeader);
-			header = header.trim();
+			SCDebug.DebugMsg("WEBReceiver : RUN");
+			while (true) {
+				Socket client = this.server.accept();
+				client.setSoTimeout(HTTP_TIMEOUT);
+				handling(client);
+			}
 		} catch (IOException e) {
-			SCDebug.DebugMsg("WEBSERVER = CANNOT GET HEADER");
+			SCDebug.DebugMsg("WEBReceiver : ERROR");
 		}
-		return header;
 	}
+
+	private void initSocket() {
+		try {
+			this.server = new ServerSocket(WEB_RPORT);
+			SCDebug.DebugMsg("WEBReceiver : SOCKET OPEN Success");
+		} catch (IOException e) {
+			SCDebug.DebugMsg("WEBReceiver : SOCKET OPEN ERROR");
+		}
+	}
+
+	private void initHandler() {
+		this.request = new HttpRequestHandler();	// Change to Factory Pattern
+		SCDebug.DebugMsg("WEBReceiver : Request Handler OPEN Success");
+	}
+
+	private void handling(Socket client) {
+		request.handle(client);
+		//routingClient(header, client);
+	}
+
+//	private String getHTTPRequest(Socket client) {
+//		String header = null;
+//		try {
+//			byte[] byteHeader = new byte[HTTP_HEADER_SIZE];
+//			client.getInputStream().read(byteHeader);
+//			header = new String(byteHeader);
+//			header = header.trim();
+//		} catch (IOException e) {
+//			SCDebug.DebugMsg("WEBSERVER = CANNOT GET HEADER");
+//		}
+//		return header;
+//	}
 
 	private void routingClient(String header, Socket client) throws IOException {
 		String[] tokensHeader = header.split(EOL);
@@ -83,15 +92,15 @@ public class WebReceiver extends Receiver {
 				tokenizer = new StringTokenizer(token);
 				String attr = tokenizer.nextToken();
 				attr = attr.toUpperCase();
-				if (attr.equals(HTTP_GET)) {// Good Request
+				if (attr.equals(HttpMethod.GET)) {// Good Request
 					fileName = tokenizer.nextToken();
-					if (fileName.startsWith("/")){
-						if(fileName.equals("/")){
-							fileName = "SoundCatcher.html"; 
-						}else{
+					if (fileName.startsWith("/")) {
+						if (fileName.equals("/")) {
+							fileName = "SoundCatcher.html";
+						} else {
 							fileName = fileName.substring(1);
 						}
-					}					
+					}
 				} else if (attr.equals(HTTP_WEBSOCKET_SEC_KEY)) {
 					String key = tokenizer.nextToken();
 					webSocketHandShake(key, client);
@@ -99,7 +108,7 @@ public class WebReceiver extends Receiver {
 					webSocketFlag = true;
 				} else {// Bad Request
 						// clientWriteData(client, "HTTP/1.1 400 Bad Request");
-				}				
+				}
 			} else {
 				System.out.println("read Not" + token);
 			}
@@ -140,7 +149,7 @@ public class WebReceiver extends Receiver {
 
 	private void webSocketHandShake(String secKey, Socket client) throws IOException {
 		try {
-			String substr = secKey + MAGIC_STRING;
+			String substr = secKey + HttpHeader.SEC_WEBSOCKET_MAGICKEY;
 			byte[] keyEncoded;
 
 			keyEncoded = Base64.getEncoder()

@@ -1,4 +1,4 @@
-package web;
+package webCode	;
 public class HttpStatus {
     public final static int CONTINUE_100 = 100;
     public final static int SWITCHING_PROTOCOLS_101 = 101;

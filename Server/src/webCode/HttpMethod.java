@@ -1,12 +1,12 @@
-package web;
+package webCode;
 
 public class HttpMethod {
-	public static final String METHOD_GET = "GET";
-    public static final String METHOD_HEAD = "HEAD";
-    public static final String METHOD_POST = "POST";
-    public static final String METHOD_PUT = "PUT";
-    public static final String METHOD_DELETE = "DELETE";
-    public static final String METHOD_CONNECT = "CONNECT";
-    public static final String METHOD_OPTIONS = "OPTIONS";
-    public static final String METHOD_TRACE = "TRACE";
+	public static final String GET = "GET";
+    public static final String HEAD = "HEAD";
+    public static final String POST = "POST";
+    public static final String PUT = "PUT";
+    public static final String DELETE = "DELETE";
+    public static final String CONNECT = "CONNECT";
+    public static final String OPTIONS = "OPTIONS";
+    public static final String TRACE = "TRACE";
 }
