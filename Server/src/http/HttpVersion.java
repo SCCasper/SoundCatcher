@@ -1,4 +1,4 @@
-package webCode;
+package http;
 
 public class HttpVersion {
 	public static final String Http10 = "HTTP/1.0";

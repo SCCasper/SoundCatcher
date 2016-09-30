@@ -1,4 +1,4 @@
-package webCode;
+package http;
 
 public class HttpMethod {
 	public static final String GET = "GET";

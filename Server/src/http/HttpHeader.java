@@ -1,4 +1,4 @@
-package webCode;
+package http;
 
 public class HttpHeader {
     public static final String A_IM = "A-IM";
@@ -105,6 +105,7 @@ public class HttpHeader {
     public static final String SAFE = "Safe";
     public static final String SCHEDULE_REPLY = "Schedule-Reply";
     public static final String SCHEDULE_TAG = "Schedule-Tag";
+    public static final String WEBSOCKET = "websocket";
     public static final String SEC_WEBSOCKET_ACCEPT = "Sec-WebSocket-Accept";
     public static final String SEC_WEBSOCKET_EXTENSIONS = "Sec-WebSocket-Extensions";
     public static final String SEC_WEBSOCKET_KEY = "Sec-WebSocket-Key";

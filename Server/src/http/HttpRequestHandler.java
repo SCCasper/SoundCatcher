@@ -1,4 +1,4 @@
-package webCode;
+package http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import debug.SCDebug;
 
 public class HttpRequestHandler {
 	private String method;
-	private String URI;
+	private String URL;
 	private String HttpVersion;
 	private HashMap<String, String> headers;
 	private String body;
@@ -35,30 +35,31 @@ public class HttpRequestHandler {
 			SCDebug.DebugMsg(HttpRequestLine);
 			if (HttpRequestLine == null) {
 				SCDebug.DebugMsg("HttpRequestHandler : NO DATA Receive");
+				return;
 			}
-			
+
 			try {
 				String[] HttpRequestTokens = HttpRequestLine.split(" ");
 				this.method = HttpRequestTokens[0];
-				this.URI = HttpRequestTokens[1];
+				this.URL = HttpRequestTokens[1];
 				this.HttpVersion = HttpRequestTokens[2];
 			} catch (Exception e) {
 				SCDebug.DebugMsg("HttpRequestHandler : RequestLine Error");
+				return;
 			}
-			
-			while(bufferReader.ready()){
+			/* Get Headers */
+			while (bufferReader.ready()) {
 				String line = bufferReader.readLine();
-				if(line.length() == 0 ){
+				if (line.length() == 0) {
 					break;
 				}
 				SCDebug.DebugMsg(line);
 				int separatorPos = line.indexOf(": ");
-				String key = line.substring(0,separatorPos);
-				String value = line.substring(separatorPos+1,line.length());
+				String key = line.substring(0, separatorPos);
+				String value = line.substring(separatorPos + 2, line.length());
 				value.trim();
 				headers.put(key, value);
-			}	
-			
+			}
 		} catch (IOException e) {
 			SCDebug.DebugMsg("HttpRequestHandler : InputStream Error");
 		}
@@ -68,8 +69,8 @@ public class HttpRequestHandler {
 		return method;
 	}
 
-	public String getURI() {
-		return URI;
+	public String getURL() {
+		return URL;
 	}
 
 	public String getHttpVersion() {
