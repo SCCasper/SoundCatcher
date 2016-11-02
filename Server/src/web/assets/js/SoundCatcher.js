@@ -26,7 +26,7 @@ function play() {
 			src.connect(audioCtx.destination);
 			src.start();
 			src.onended = play;
-		})
+		});
 	} else {
 		console.log("START FLAG ON");
 		startFlag = true;
@@ -38,7 +38,7 @@ function webSocketConnection(){
 	var project = document.getElementById('project');
 	var success = document.getElementById('success');
 	var msgCnt = document.getElementById('msgCnt');
-	
+
 	socket = new WebSocket(serverIP);
 	socket.binaryType = 'arraybuffer';
 	socket.onopen = function(event) {
@@ -61,7 +61,7 @@ function webSocketConnection(){
 			if (startFlag && queue.length > 3) {
 				console.log("START FLAG OFF");
 				startFlag = false;
-				play();				
+				play();
 			}
 		}
 	};
