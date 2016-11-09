@@ -49,7 +49,7 @@ public class WebSender extends Sender {
 	}
 
 	private void initWavHeader() {
-		int totalDataLen = WAV_BLOCK_SIZE *  + 36;
+		int totalDataLen = WAV_BLOCK_SIZE + 36;
 
 		// RIFF
 		WAV_HEADER[0] = 'R';
