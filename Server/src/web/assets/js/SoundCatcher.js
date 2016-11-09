@@ -3,7 +3,7 @@ var audioCtx;
 var queue = new Array();
 var startFlag = true;
 var receiveCnt = 0;
-var cons;
+
 
 window.addEventListener("load", initAudio);
 
@@ -41,7 +41,9 @@ function webSocketConnection() {
     var serverIP = "ws://" + document.domain + ":80"; // Fix to Server IP  ex) localhost/something? -> localhost
     var project = document.getElementById("project");
     var success = document.getElementById("success");
-    cons = document.getElementById("console");
+    var cons = document.getElementById("console");
+    var msgCnt = document.getElementById("msgCnt");
+    var queueLength = document.getElementById("queueLength");
 
     socket = new WebSocket(serverIP);
     socket.binaryType = "arraybuffer"; // A string indicating the type of binary data being transmitted by the connection
@@ -60,14 +62,13 @@ function webSocketConnection() {
     socket.onmessage = function(msg) {
         receiveCnt++;
         console.log("MSG CNT : " + receiveCnt);
-        cons.innerHTML += "MSG CNT : " + receiveCnt;
+        msgCnt.innerHTML = "MSG CNT : " + receiveCnt;
         if (msg.data instanceof ArrayBuffer) {
             console.log("MSG ARRIVE");
-            cons.innerHTML += "MSG ARRIVE";
             queue.push(msg.data);
             console.log("QUEUE PUSH");
             console.log("QUEUE Length : " + queue.length);
-            cons.innerHTML += "QUEUE Length : " + queue.length;
+            queueLength.innerHTML = "QUEUE Length : " + queue.length;
             if (startFlag && queue.length > 3) {
                 console.log("START FLAG OFF");
                 startFlag = false;
