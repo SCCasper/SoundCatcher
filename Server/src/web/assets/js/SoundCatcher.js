@@ -3,6 +3,7 @@ var audioCtx;
 var queue = new Array();
 var startFlag = true;
 var receiveCnt = 0;
+var cons;
 
 window.addEventListener("load", initAudio);
 
@@ -40,27 +41,33 @@ function webSocketConnection() {
     var serverIP = "ws://" + document.domain + ":80"; // Fix to Server IP  ex) localhost/something? -> localhost
     var project = document.getElementById("project");
     var success = document.getElementById("success");
+    cons = document.getElementById("console");
 
     socket = new WebSocket(serverIP);
     socket.binaryType = "arraybuffer"; // A string indicating the type of binary data being transmitted by the connection
 
     socket.onopen = function(event) {
         console.log("Socket Open Success");
+        cons.innerHTML += "Socket Open Success";
         project.style.display = 'none';
         success.style.display = 'block';
     };
     socket.onerror = function(event) {
         alert("Socket Open Error Retry");
         console.log("Socket Open Error");
+        cons.innerHTML += "Socket Open Error";
     };
     socket.onmessage = function(msg) {
         receiveCnt++;
         console.log("MSG CNT : " + receiveCnt);
+        cons.innerHTML += "MSG CNT : " + receiveCnt;
         if (msg.data instanceof ArrayBuffer) {
             console.log("MSG ARRIVE");
+            cons.innerHTML += "MSG ARRIVE";
             queue.push(msg.data);
             console.log("QUEUE PUSH");
             console.log("QUEUE Length : " + queue.length);
+            cons.innerHTML += "QUEUE Length : " + queue.length;
             if (startFlag && queue.length > 3) {
                 console.log("START FLAG OFF");
                 startFlag = false;
